@@ -2,7 +2,7 @@
 
 This method uses Python's standard `venv` tool to manage dependencies. It's a lightweight approach that's excellent for applications that rely on pure-Python packages available from `pip`.
 
-This example uses the `product_job.py` script.
+This example uses the `product_job.py` script in the /scripts/ folder.
 
 -----
 

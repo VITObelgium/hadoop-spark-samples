@@ -1,3 +1,29 @@
+## ❗ Important Note: Connecting to the New Hadoop Cluster
+
+We are currently in a transition period from our old Hadoop cluster to a new, upgraded cluster. By default, the `userVM` is configured to interact with the **old** cluster.
+
+To run the examples in this repository against the **new cluster**, you **must** set the following environment variables in your terminal session and/or scripts *before* running any commands.
+
+### For `hdfs` and `yarn` Commands
+
+If you need to interact directly with HDFS or YARN on the new cluster, run these commands first:
+
+```bash
+export HADOOP_HOME=/usr/local/hadoop/
+export HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop/
+export PATH=/usr/local/hadoop/bin/:$PATH
+```
+
+### For `spark-submit` Commands
+
+To ensure your Spark jobs are submitted to the new cluster using Spark 3.5.0 (the minimum supported Spark version on the **new cluster**), you must set these variables in addition to the above:
+
+```bash
+export SPARK_HOME=/opt/spark3_5_0/
+export SPARK_CONF_DIR=/opt/spark3_5_0/conf2/
+```
+----
+
 # Deploying Python PySpark Applications on Hadoop
 
 This repository provides templates and best practices for deploying PySpark applications with custom Python dependencies onto our Hadoop YARN cluster. Since libraries are not installed globally, you must package your environment with your application.
