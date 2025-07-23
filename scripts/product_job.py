@@ -1,4 +1,3 @@
-# product_job.py
 import sys
 import time
 import random

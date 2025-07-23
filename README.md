@@ -68,6 +68,6 @@ The performance of a Spark job is highly dependent on how data is partitioned. A
 
 Aim to size your partitions so that each task takes from **a few minutes to several minutes** to complete. This makes the scheduling overhead negligible while keeping the cost of re-running a failed task acceptable. The sample scripts in this repository demonstrate 2 different but valid approaches:
 1. A single partition per product (when processing a single product takes a longer time) 
-2. A batching strategy to batch multiple products per partition. (when processing of a single product takes a small amount of time or when setup/initialization can be shared between products)
+2. A batching strategy to batch multiple products per partition. (when processing of a single product takes a small amount of time or when setup/initialization can be shared between products and takes a long time)
 
 -----
