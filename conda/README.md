@@ -13,7 +13,7 @@ First, create a Conda environment on your local machine and install the necessar
 
 ```bash
 # Create a new conda environment
-conda create -n sample_conda_env python=3.9 pandas -y
+conda create -n sample_conda_env python=3.11 pandas -y
 
 # Activate it
 conda activate sample_conda_env
@@ -48,8 +48,7 @@ spark-submit \
   --archives sample_conda_env.tar.gz#environment \
   --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=./environment/bin/python \
   --conf spark.yarn.executorEnv.PYSPARK_PYTHON=./environment/bin/python \
-  product_job.py \
-  500
+  product_job.py 500
 ```
 
 ### Option B: HDFS Staging (Recommended for efficiency)
@@ -73,6 +72,5 @@ Uploading the environment to HDFS once is much faster for repeated job runs.
       --archives hdfs:///user/$USER/envs/sample_conda_env.tar.gz#environment \
       --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=./environment/bin/python \
       --conf spark.yarn.executorEnv.PYSPARK_PYTHON=./environment/bin/python \
-      product_job.py \
-      500
+      product_job.py 500
     ```

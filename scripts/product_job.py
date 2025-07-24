@@ -1,51 +1,56 @@
+# product_job.py
 import sys
 import time
 import random
+from typing import List
+
 import pandas as pd
 from pyspark import SparkContext
+from pyspark.rdd import RDD
 
-def process_product(product_id):
+def process_product(product_id: int) -> float:
     """
     Simulates a complex calculation for a single product.
     This function is called by .map() for each element in the RDD.
+
+    :param product_id: The ID of the product to process.
+    :return: The calculated score as a float.
     """
     # In a real remote sensing job, this could be running a land use
     # classification model on an image tile or performing atmospheric correction.
     processing_time = random.uniform(0.5, 2.0)
     time.sleep(processing_time)
     
-    score = (product_id % 23) * random.uniform(0.9, 1.1)
+    score: float = (product_id % 23) * random.uniform(0.9, 1.1)
     return score
 
-def main(num_products):
+def main(num_products: int) -> None:
     """
     Main Spark job to run a per-product parallelized map-reduce operation.
 
     :param num_products: The total number of products to generate and process.
     """
-    sc = SparkContext(appName="PerProductMapReduce")
+    sc: SparkContext = SparkContext(appName="PerProductMapReduce")
     
     print("\n--- Job Configuration ---")
     print(f"Number of Products to process: {num_products}")
     print("-------------------------")
 
-    # 1. Data Generation: Simulate creating a product list from a pandas DataFrame.
-    df = pd.DataFrame({'product_id': range(1, num_products + 1)})
-    products_to_process = df['product_id'].tolist()
+    # 1. Data Generation
+    df: pd.DataFrame = pd.DataFrame({'product_id': range(1, num_products + 1)})
+    products_to_process: List[int] = df['product_id'].tolist()
     
-    # 2. Parallelize: Create an RDD with one partition for each product.
-    rdd = sc.parallelize(products_to_process, len(products_to_process))
+    # 2. Parallelize: Create an RDD of integers
+    rdd: RDD[int] = sc.parallelize(products_to_process, len(products_to_process))
     print(f"RDD created with {rdd.getNumPartitions()} partitions (one per product).")
 
     print("\n🚀 Starting Map-Reduce job...")
-    start_time = time.time()
+    start_time: float = time.time()
 
-    # 3. Map-Reduce: Process each product and aggregate the results.
-    #    - map: Applies 'process_product' to each individual product in its own task.
-    #    - reduce: Sums all the scores from the map step.
-    total_score = rdd.map(process_product).reduce(lambda a, b: a + b)
+    # 3. Map-Reduce
+    total_score: float = rdd.map(process_product).reduce(lambda a, b: a + b)
 
-    end_time = time.time()
+    end_time: float = time.time()
     print("Job finished.")
 
     print("\n--- Job Results ---")
@@ -61,11 +66,11 @@ if __name__ == "__main__":
         sys.exit(-1)
     
     try:
-        num_products = int(sys.argv[1])
-        if num_products <= 0:
+        num_products_arg: int = int(sys.argv[1])
+        if num_products_arg <= 0:
             raise ValueError("Input must be a positive integer.")
     except ValueError:
         print("Error: <num_products> must be a positive integer.", file=sys.stderr)
         sys.exit(-1)
         
-    main(num_products)
+    main(num_products_arg)
