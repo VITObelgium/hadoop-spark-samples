@@ -22,6 +22,9 @@ To ensure your Spark jobs are submitted to the new cluster using Spark 3.5.0 (th
 export SPARK_HOME=/opt/spark3_5_0/
 export SPARK_CONF_DIR=/opt/spark3_5_0/conf2/
 ```
+
+To make this easier the repository contains a source file in the `/scripts/` folder that can be sourced to directly set the correct environment variables.
+
 ----
 
 # Deploying Python PySpark Applications on Hadoop
