@@ -1,5 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 #Source the environment variables to point to the new cluster
+set -a
 source ../scripts/source_new_cluster
 
 #The used docker image

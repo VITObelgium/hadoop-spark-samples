@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+set -a
 source ../scripts/source_new_cluster
 
 ${SPARK_HOME}/bin/spark-submit \
