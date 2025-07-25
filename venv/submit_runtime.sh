@@ -1,9 +1,5 @@
 #!/bin/sh
-export SPARK_HOME=/opt/spark3_5_0/
-export SPARK_CONF_DIR=/opt/spark3_5_0/conf2/
-export HADOOP_HOME=/usr/local/hadoop/
-export HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop/
-export PATH=/usr/local/hadoop/bin/:$PATH
+source ../scripts/source_new_cluster
 
 ${SPARK_HOME}/bin/spark-submit \
   --master yarn \

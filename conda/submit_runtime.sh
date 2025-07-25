@@ -4,7 +4,7 @@ source ../scripts/source_new_cluster
 ${SPARK_HOME}/bin/spark-submit \
   --master yarn \
   --deploy-mode cluster \
-  --archives hdfs:///user/$USER/envs/sample_venv.tar.gz#environment \
+  --archives sample_conda_env.tar.gz#environment \
   --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=./environment/bin/python \
   --conf spark.yarn.executorEnv.PYSPARK_PYTHON=./environment/bin/python \
   ../scripts/product_job.py 500

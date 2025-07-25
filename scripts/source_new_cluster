@@ -1,0 +1,5 @@
+SPARK_HOME=/opt/spark3_5_0/
+SPARK_CONF_DIR=/opt/spark3_5_0/conf2/
+HADOOP_HOME=/usr/local/hadoop/
+HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop/
+PATH=/usr/local/hadoop/bin/:$PATH
