@@ -1,0 +1,6 @@
+name: job
+dependencies:
+  - python=3.11
+  - pystac-client=0.9
+  - rasterio=1.4
+  - numpy=2.3
