@@ -1,18 +1,19 @@
 
 # Remote sensing data processing
 
-This sample builds on the [conda](../conda/README.md) and [docker](../docker/README.md) samples to integrate all parts and introduce the processing of remote sensing data.
+This sample builds on the [conda](../conda/README.md) and [docker](../docker/README.md) samples to provide an integrated
+example of raster data processing.
 
 -----
 
-## Step 1: Create the application
+## Step 1: Create the Spark job
 
 There are several parts of the eventual spark job that need to be created.
 
 ### Define the environment
 The python version and dependencies can be configured to the `requirements.yml` file. 
 This file is copied to the docker image during the build to create a conda environment.
-The name of the environment is `job`. If you change this you also need to change the `PATH` in the Dockerfile.
+The name of the environment is `job`. If you change this you also need to change the `ENV_DIR` in the Dockerfile.
 Make sure to update `PYSPARK_PYTHON` in `submit_job.sh` to reference the correct python version.
 
 ### Write the processing logic
@@ -24,11 +25,40 @@ Additional functionality is defined in `utilities/functions.py` to demonstrate h
 The `utilities` folder is zipped and deployed with the application to make it available on all nodes.
 
 ### Create a docker image
-The docker image uses the same base image as in the `docker` sample.
-We create a conda environment based on the `requirements.yml`.
-Because conda installs its own python, we do nor need to provide it ourselves.
+We use docker to deploy our conda environment to the Hadoop cluster, as this greatly simplifies dependency management.
+We provide two docker files in this sample to highlight best practices concerning the creation of docker images.
+
+#### Standard Dockerfile
+In the basic `Dockerfile` we take the dependencies as defined in `requirements.yml` and use conda to build a 
+corresponding python environment. This environment is then made available via `PATH` so that any spark job that runs 
+in the container has access to the correct dependencies.
+
+#### Staged Dockerfile
+Building a conda environment in the image introduces a large amount of supporting files that are actually not
+needed to run the environment itself. This increases the size of the docker image considerably, 
+which slows down job startup and puts additional strain on the cluster network.
+
+Docker solves this with [multi-stage builds](https://docs.docker.com/build/building/multi-stage/). 
+This introduces the concept of an intermediary docker image in which we can prepare the conda environment during a build. 
+We can then just take the bits we need from this intermediary image and put them in the final image. 
+An example of this procedure can be found in `staged.Dockerfile`.
+
+In `staged.Dockerfile` we define a `builder` stage where we install conda, take the `requirements.yml` and create the conda env. 
+This is the same procedure as in the standard `Dockerfile`. However now we use `conda-pack` to bundle the entire conda environment into a tarfile.
+We then start build of the actual output dokcer image. There we only copy the tar file from the `builder` stage and unpack it.
+No other actions are needed except to add python to the `PATH`, not even conda is installed.
+
+#### Best practice
+We recommend using multi-stage docker builds to keep the resulting images small. 
+In this case for example there is a 2gb difference between the staged and non-staged images.
 
 ### Deploy docker image to repository
+You can add your own images to a publicly accessible registry of your choice.
+Check the documentation of the [docker](../docker/README.md) sample to learn how to make your repository available 
+in the Hadoop cluster.
+
+The sample image defined here is already available from the public 
+`vito-docker.artifactory.vgt.vito.be/spark-docker-sample-advanced` repository with the `latest` tag.
 
 -----
 

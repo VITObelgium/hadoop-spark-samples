@@ -1,9 +1,10 @@
 FROM vito-docker.artifactory.vgt.vito.be/hadoop-alma9-base:latest
 
-ENV MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-py311_24.7.1-0-Linux-x86_64.sh
-ENV TMP_DIR=/tmp/build
-ENV CONDA_DIR=/opt/conda
-ENV PATH=$CONDA_DIR/envs/job/bin:$PATH
+ENV MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-py311_24.7.1-0-Linux-x86_64.sh \
+    TMP_DIR=/tmp/build \
+    CONDA_DIR=/opt/conda \
+    ENV_DIR=$CONDA_DIR/envs/job \
+    PATH=$ENV_DIR/bin:$PATH
 
 RUN dnf install -y wget \
     && dnf clean all

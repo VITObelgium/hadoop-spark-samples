@@ -41,6 +41,7 @@ This guide covers core concepts applicable to all deployment methods and introdu
   * `/docker/`: A self-contained example for deploying with Docker.
   * `/venv/`: A guide for deploying with Python's `venv`. (For beginners: start here)
   * `/conda/`: A guide for deploying with Conda.
+  * `/advanced/`: An integrated example combining docker and conda for raster processing.
 
 ## Dependency Management Approaches
 

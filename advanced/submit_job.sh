@@ -4,7 +4,7 @@
 set -a
 source ../scripts/source_new_cluster
 # bundle the dependencies of the python script to make them available on all nodes
-zip -r utilities.zip ../histogram/utilities
+zip -r utilities.zip ../integrated/utilities
 
 #The used docker image
 IMAGE="vito-docker.artifactory.vgt.vito.be/spark-samples/advanced:latest"
