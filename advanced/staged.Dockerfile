@@ -5,7 +5,7 @@ FROM vito-docker.artifactory.vgt.vito.be/hadoop-alma9-base:latest AS builder
 ENV MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-py311_24.7.1-0-Linux-x86_64.sh \
     CONDA_DIR=/opt/conda \
     TMP_DIR=/tmp/build \
-    ENV_DIR=$CONDA_DIR/envs/job
+    ENV_DIR=/opt/conda/envs/job
 
 # install miniconda and mamba, prevent usage of commercial conda channels
 RUN set -eux \

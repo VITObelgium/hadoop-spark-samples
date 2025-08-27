@@ -63,10 +63,14 @@ The sample image defined here is already available from the public
 -----
 
 ## Step 2: Submit the Job to YARN
-We use the `submit_job.sh` script to run the spark job on the cluster. 
+We use the `submit_job.sh` script to run the spark job on the cluster.
 Refer to the [docker sample](../docker/README.md) for more information about submitting jobs in with docker images.
+An important difference here is the inclusion of `/data` in the mounts, as we need access to the data stored there.
+
+The output of the job can be found in the spark application logs.
 
 Some things to keep in mind:
 
 - Make sure to use `PYSPARK_PYTHON` to refer to the python version specified in `requirements.yml`.
 - Point `IMAGE` to the correct repository and make sure it is reachable from the cluster.
+- Add any volumes you need to the `MOUNTS` variable
