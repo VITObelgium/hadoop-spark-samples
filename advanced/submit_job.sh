@@ -9,7 +9,7 @@ zip -q -r utilities.zip utilities
 #The used docker image
 IMAGE="vito-docker.artifactory.vgt.vito.be/spark-docker-sample-advanced:latest"
 #These mounts are required for authentication purposes and for communication between the container and the cluster.
-MOUNTS="/var/lib/sss/pipes:/var/lib/sss/pipes:rw,/usr/local/hadoop/:/usr/local/hadoop/:ro,/etc/krb5.conf:/etc/krb5.conf:ro,/data:/data:ro"
+MOUNTS="/var/lib/sss/pipes:/var/lib/sss/pipes:rw,/usr/local/hadoop/:/usr/local/hadoop/:ro,/etc/krb5.conf:/etc/krb5.conf:ro,/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/:/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/:ro"
 #The Python that is installed in the docker container
 PYSPARK_PYTHON="/opt/env/bin/python3.11"
 
