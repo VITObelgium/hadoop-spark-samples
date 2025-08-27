@@ -15,10 +15,10 @@ def histogram(image_file: str):
 
 def ndvi_files(collection: str, start_date: str, end_date: str,
                min_lon: float, max_lon: float, min_lat: float, max_lat: float):
-    """Uses the Terrascope STAC API to return a list of NDVI files for a collection of EOProducts
-    specified by a combination of product type, time window and bounding box.
+    """Uses the Terrascope STAC API to return a list of NDVI cog products
+    specified by a combination of collection id, time window and bounding box.
 
-    The Terrascope STAC Items contain an alternate href which points to the mounted file in the cluster.
+    The Terrascope STAC Items contain an alternate href which points to the mounted product file in the cluster.
     See https://docs.terrascope.be/Developers/WebServices/TerraCatalogue/STACAPI.html for more information.
     """
 
