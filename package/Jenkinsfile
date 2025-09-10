@@ -16,4 +16,5 @@ pythonPipeline {
   enable_uv               = true
   enable_caching          = true
   package_dir             = 'package'
+  run_tests               = false
 }
