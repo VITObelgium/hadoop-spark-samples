@@ -8,7 +8,7 @@ to be executed in parallel.
 from operator import add
 from pyspark import SparkContext
 
-from histogram_utilities.functions import ndvi_files, histogram
+from histogram_sample_package.functions import ndvi_files, histogram
 
 if __name__ == '__main__':
     # Query the Sentinel-2 files that will be processed.

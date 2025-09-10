@@ -7,12 +7,13 @@
 
 @Library('lib')_
 
-pythonPipeline {
-  package_name            = 'histogram_utilities'
+PythonPipeline {
+  package_name            = 'histogram_sample_package'
   python_version          = ['3.11']
   create_tag_job          = true
   build_container_image   = true
   docker_registry_prod    = 'vito-docker.artifactory.vgt.vito.be'
   enable_uv               = true
   enable_caching          = true
+  package_dir             = 'package'
 }
