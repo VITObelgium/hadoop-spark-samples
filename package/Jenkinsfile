@@ -7,7 +7,7 @@
 
 @Library('lib')_
 
-PythonPipeline {
+pythonPipeline {
   package_name            = 'histogram_sample_package'
   python_version          = ['3.11']
   create_tag_job          = true
