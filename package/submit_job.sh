@@ -5,7 +5,7 @@ set -a
 source ../scripts/source_new_cluster
 
 #The used docker image
-IMAGE="vito-docker.artifactory.vgt.vito.be/spark-docker-sample-advanced:latest"
+IMAGE="vito-docker.artifactory.vgt.vito.be/histogram_sample_package:latest"
 #These mounts are required for authentication purposes and for communication between the container and the cluster.
 MOUNTS="/var/lib/sss/pipes:/var/lib/sss/pipes:rw,/usr/local/hadoop/:/usr/local/hadoop/:ro,/etc/krb5.conf:/etc/krb5.conf:ro,/data:/data:ro"
 #The Python that is installed in the docker container
