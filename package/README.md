@@ -68,7 +68,7 @@ There the image will be available as `histogram_sample_package:latest` and `hist
 ## Step 2: Submit the Job to YARN
 We use the `submit_job.sh` script to run the spark job on the cluster.
 Refer to the [docker sample](../docker/README.md) for more information about submitting jobs in with docker images.
-An important difference here is the inclusion of `/data` in the mounts, as we need access to the data stored there.
+An important difference here is the inclusion of `/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/` in the mounts, as we need access to the data stored there.
 We also add the zipped dependencies of the spark job.
 
 The output of the job can be found in the spark application logs.
