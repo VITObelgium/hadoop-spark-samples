@@ -1,0 +1,20 @@
+#!/usr/bin/env groovy
+
+/*
+    This Jenkinsfile uses the PythonPipeline from the Jenkins shared library
+    https://confluence.vito.be/spaces/EP/pages/94143001/Python+pipeline
+*/
+
+@Library('lib')_
+
+pythonPipeline {
+  package_name            = 'histogram_sample_package'
+  python_version          = ['3.11']
+  create_tag_job          = true
+  build_container_image   = true
+  docker_registry_prod    = 'vito-docker.artifactory.vgt.vito.be'
+  enable_uv               = true
+  enable_caching          = true
+  package_dir             = 'package'
+  run_tests               = false
+}
