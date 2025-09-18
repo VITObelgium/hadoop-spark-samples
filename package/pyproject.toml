@@ -17,3 +17,6 @@ dependencies = [
 
 [tool.setuptools.packages.find]
 include = ["histogram_sample_package*"]
+
+[project.scripts]
+histcalc = "histogram_sample_package.histogram:main"

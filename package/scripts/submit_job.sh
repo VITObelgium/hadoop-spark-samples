@@ -11,9 +11,16 @@ MOUNTS="/var/lib/sss/pipes:/var/lib/sss/pipes:rw,/usr/local/hadoop/:/usr/local/h
 #The Python that is installed in the docker container
 PYSPARK_PYTHON="/usr/bin/python3.11"
 
+#Parametrize script execution
+: "${HISTOGRAM__PROCESSOR_MEMORY:=4G}"
+: "${HISTOGRAM__PROCESSOR_EXECUTOR_CORES:=1}"
+export HISTOGRAM_PROCESSOR_PARAMETERS="$*"
+
 ${SPARK_HOME}/bin/spark-submit \
   --master yarn \
   --deploy-mode cluster \
+  --executor-memory=HISTOGRAM__PROCESSOR_MEMORY \
+  --conf spark.executor.cores=HISTOGRAM__PROCESSOR_EXECUTOR_CORES \
   --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_TYPE=docker \
   --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=$IMAGE \
   --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=$MOUNTS \
@@ -22,4 +29,4 @@ ${SPARK_HOME}/bin/spark-submit \
   --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=$IMAGE \
   --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=$MOUNTS \
   --conf spark.executorEnv.PYSPARK_PYTHON=$PYSPARK_PYTHON \
-  ../advanced/histogram.py
+  /opt/venv/lib/python3.11/site-packages/histogram_sample_package/histogram.py $HISTOGRAM_PROCESSOR_PARAMETERS

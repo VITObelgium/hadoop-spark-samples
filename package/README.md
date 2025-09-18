@@ -66,10 +66,21 @@ There the image will be available as `histogram_sample_package:latest` and `hist
 -----
 
 ## Step 2: Submit the Job to YARN
-We use the `submit_job.sh` script to run the spark job on the cluster.
+We use the `scipts/submit_job.sh` script to run the spark job on the cluster.
 Refer to the [docker sample](../docker/README.md) for more information about submitting jobs in with docker images.
 An important difference here is the inclusion of `/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/` in the mounts, as we need access to the data stored there.
-We also add the zipped dependencies of the spark job.
+
+As the `submit_job.sh` script is included in the docker image, we can run spark jobs directly from the docker image.
+This is done using
+
+``shell
+docker run 
+    -e HISTOGRAM__PROCESSOR_MEMORY=8gb 
+    -e HISTOGRAM__PROCESSOR_EXECUTOR_CORES=2 
+    vito-docker.artifactory.vgt.vito.be/spark-docker-sample-advanced:latest
+    /spark_submits/submit_job.sh
+    --start_date=2024-05-01
+``
 
 The output of the job can be found in the spark application logs.
 
