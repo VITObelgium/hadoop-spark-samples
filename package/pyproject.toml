@@ -12,7 +12,8 @@ license = "MIT"
 dependencies = [
         'pystac-client==0.9',
         'rasterio==1.4',
-        'numpy==2.3'
+        'numpy==2.3',
+        'pyspark==3.5.0'
     ]
 
 [tool.setuptools.packages.find]

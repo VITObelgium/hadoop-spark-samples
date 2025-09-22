@@ -74,11 +74,17 @@ As the `submit_job.sh` script is included in the docker image, we can run spark 
 This is done using
 
 ``shell
-docker run 
-    -e HISTOGRAM__PROCESSOR_MEMORY=8gb 
-    -e HISTOGRAM__PROCESSOR_EXECUTOR_CORES=2 
-    vito-docker.artifactory.vgt.vito.be/spark-docker-sample-advanced:latest
-    /spark_submits/submit_job.sh
+docker run \
+	-e KRB5CCNAME="FILE:/tmp/krb5cc" \
+    -e HISTOGRAM__PROCESSOR_MEMORY=8gb \
+    -e HISTOGRAM__PROCESSOR_EXECUTOR_CORES=2 \ 
+    -v $(klist | head -n 1 | cut -d ":" -f3):/tmp/krb5cc \
+    -v /opt/spark3_5_0/conf2/:/opt/spark3_5_0/conf2/ \
+    -v /usr/local/hadoop/etc/hadoop/:/usr/local/hadoop/etc/hadoop/ \
+    -v /var/lib/sss/pipes:/var/lib/sss/pipes \
+    -v /etc/krb5.conf:/etc/krb5.conf \
+    vito-docker.artifactory.vgt.vito.be/spark-docker-sample-advanced:latest \
+    /spark-submits/submit_job.sh \
     --start_date=2024-05-01
 ``
 
