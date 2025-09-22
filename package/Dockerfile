@@ -2,8 +2,7 @@ ARG BASE_IMAGE=vito-docker.artifactory.vgt.vito.be/hadoop-alma9-base:latest
 
 FROM ${BASE_IMAGE}
 ARG PACKAGE_NAME
-#RUN mkdir /etc/pki/ca-trust/extracted/pem
-COPY certs/pem /etc/pki/ca-trust/extracted/pem
+
 RUN dnf install -y python3.11 python3.11-pip python3.11-devel gcc make \
     && dnf clean all
 
