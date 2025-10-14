@@ -75,6 +75,7 @@ This is done using
 
 ``shell
 docker run \
+    --rm \
 	-e KRB5CCNAME="FILE:/tmp/krb5cc" \
     -e HISTOGRAM__PROCESSOR_MEMORY=8gb \
     -e HISTOGRAM__PROCESSOR_EXECUTOR_CORES=2 \ 

@@ -9,7 +9,7 @@ from operator import add
 from pyspark import SparkContext
 import argparse
 
-from functions import ndvi_files, histogram, valid_date
+from histogram_sample_package.functions import ndvi_files, histogram, valid_date
 
 
 def main():
