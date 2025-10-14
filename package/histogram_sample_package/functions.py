@@ -1,7 +1,16 @@
 from pystac_client import Client
 import rasterio
 import numpy as np
+import datetime
+import argparse
 
+
+def valid_date(s: str) -> str:
+    try:
+        datetime.datetime.strptime(s, "%Y-%m-%d")
+        return s
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"not a valid date: {s!r}")
 
 def histogram(image_file: str):
     """Calculates the histogram for a given (single band) image file."""
