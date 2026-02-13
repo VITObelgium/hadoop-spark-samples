@@ -34,6 +34,10 @@ This will create a `sample_conda_env.tar.gz` file.
 
 ## Step 2: Submit the Job to YARN
 
+Before submitting, make sure to source the appropriate environment script for your Spark version:
+- `source ../scripts/source_new_cluster` - For Spark 3.5.0
+- `source ../scripts/source_spark4.sh` - For Spark 4.0.1
+
 You can provide the environment archive to Spark in two ways.
 
 ### Option A: Runtime Staging (Simple for a quick test)

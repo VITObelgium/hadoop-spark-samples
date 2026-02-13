@@ -23,11 +23,13 @@ The Docker image for this sample is already built and publicly available. You **
     ```
 
 -----
-### Understanding the `submit.sh` Script
+### Understanding the `submit_docker.sh` Script
 
 This script automates the process of submitting the Spark job with all the required configurations for a Dockerized environment.
 
-* **`source ...`**: This command loads the environment variables (`SPARK_HOME`, `HADOOP_CONF_DIR`, etc.) required to target the new Hadoop cluster and the correct Spark version.
+* **`source ...`**: This command loads the environment variables (`SPARK_HOME`, `HADOOP_CONF_DIR`, etc.) required to target the new Hadoop cluster and the correct Spark version. The repository supports both Spark 3.5.0 and Spark 4.0.1:
+  - `source ../scripts/source_new_cluster` - For Spark 3.5.0
+  - `source ../scripts/source_spark4.sh` - For Spark 4.0.1
 * **`MOUNTS`**: This variable defines critical volume mounts. It maps files and directories from the host machine (the cluster node) into the Docker container. This is necessary for services like Kerberos (`krb5.conf`) and SSSD (`sss/pipes`) to work correctly, enabling proper authentication inside the container.
 * **`PYSPARK_PYTHON`**: This tells Spark the exact path to the Python executable *inside* the container.
 * **`spark-submit --conf ...`**: The `--conf` flags pass specific settings to Spark. The following configurations are crucial for running with Docker on YARN.

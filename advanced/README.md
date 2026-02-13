@@ -65,6 +65,9 @@ The sample image defined here is already available from the public
 ## Step 2: Submit the Job to YARN
 We use the `submit_job.sh` script to run the spark job on the cluster.
 Refer to the [docker sample](../docker/README.md) for more information about submitting jobs in with docker images.
+
+**Note:** The `submit_job.sh` script sources `../scripts/source_new_cluster` by default (for Spark 3.5.0). To use Spark 4.0.1, you can modify the script to source `../scripts/source_spark4.sh` instead, or set the environment variables manually before running the script.
+
 An important difference here is the inclusion of `/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/` in the mounts, as we need access to the data stored there.
 We also add the zipped dependencies of the spark job.
 

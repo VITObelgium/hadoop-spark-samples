@@ -1,7 +1,13 @@
 #!/bin/bash
 #Source the environment variables to point to the new cluster
+# Default to Spark 3.5.0, but allow override via SPARK_VERSION env var
+# Set SPARK_VERSION=4.0.1 or SPARK_VERSION=4 to use Spark 4.0.1
 set -a
-source ../scripts/source_new_cluster
+if [ "${SPARK_VERSION:-3.5.0}" = "4.0.1" ] || [ "${SPARK_VERSION:-3.5.0}" = "4" ]; then
+    source ../scripts/source_spark4.sh
+else
+    source ../scripts/source_new_cluster
+fi
 
 #The used docker image
 IMAGE="vito-docker.artifactory.vgt.vito.be/spark-docker-sample:latest"

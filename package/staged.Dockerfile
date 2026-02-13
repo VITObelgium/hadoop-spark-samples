@@ -28,3 +28,7 @@ COPY --from=builder /app/dist/*.whl .
 
 # Install the wheel
 RUN pip3.11 install --no-cache-dir ./*.whl
+
+# Copy scripts for Spark submission (supports both Spark 3.5.0 and 4.0.1)
+COPY scripts /spark-submits
+RUN chmod +x /spark-submits/*

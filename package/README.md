@@ -66,13 +66,19 @@ There the image will be available as `histogram_sample_package:latest` and `hist
 -----
 
 ## Step 2: Submit the Job to YARN
-We use the `scipts/submit_job.sh` script to run the spark job on the cluster.
+We use the `scripts/submit_job.sh` script to run the spark job on the cluster.
 Refer to the [docker sample](../docker/README.md) for more information about submitting jobs in with docker images.
+
+**Note:** The `submit_job.sh` script and all Spark configuration scripts (including `source_spark4.sh`) are automatically included in the Docker image via the Dockerfile. By default, it uses Spark 3.5.0. To use Spark 4.0.1, you can set the `SPARK_VERSION` environment variable when running the container (see examples below). The script will automatically select the correct Spark configuration based on this variable.
+
+**Important:** The only mounts you need are for Spark configuration directories (which differ per Spark version), Hadoop, and authentication - the scripts themselves are already in the container.
+
 An important difference here is the inclusion of `/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/` in the mounts, as we need access to the data stored there.
 
 As the `submit_job.sh` script is included in the docker image, we can run spark jobs directly from the docker image.
-This is done using
+This is done using one of the following commands, depending on which Spark version you want to use:
 
+**For Spark 3.5.0:**
 ``shell
 docker run \
     --rm \
@@ -89,6 +95,24 @@ docker run \
     --start_date=2024-05-01
 ``
 
+**For Spark 4.0.1:**
+``shell
+docker run \
+    --rm \
+	-e KRB5CCNAME="FILE:/tmp/krb5cc" \
+    -e SPARK_VERSION=4.0.1 \
+    -e HISTOGRAM__PROCESSOR_MEMORY=8gb \
+    -e HISTOGRAM__PROCESSOR_EXECUTOR_CORES=2 \ 
+    -v $(klist | head -n 1 | cut -d ":" -f3):/tmp/krb5cc \
+    -v /opt/spark4_0_1/conf/:/opt/spark4_0_1/conf/ \
+    -v /usr/local/hadoop:/usr/local/hadoop \
+    -v /var/lib/sss/pipes:/var/lib/sss/pipes \
+    -v /etc/krb5.conf:/etc/krb5.conf \
+    vito-docker.artifactory.vgt.vito.be/histogram_sample_package:latest \
+    /spark-submits/submit_job.sh \
+    --start_date=2024-05-01
+``
+
 The output of the job can be found in the spark application logs.
 
 Some things to keep in mind:
@@ -96,3 +120,4 @@ Some things to keep in mind:
 - Make sure to use `PYSPARK_PYTHON` to refer to the python version specified in the docker image.
 - Point `IMAGE` to the correct repository and make sure it is reachable from the cluster.
 - Add any volumes you need to the `MOUNTS` variable
+- For Spark 4.0.1, mount `/opt/spark4_0_1/conf/` instead of `/opt/spark3_5_0/conf2/` in the Docker volume mounts

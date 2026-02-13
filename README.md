@@ -16,14 +16,30 @@ export PATH=/usr/local/hadoop/bin/:$PATH
 
 ### For `spark-submit` Commands
 
-To ensure your Spark jobs are submitted to the new cluster using Spark 3.5.0 (the minimum supported Spark version on the **new cluster**), you must set these variables in addition to the above:
+To ensure your Spark jobs are submitted to the new cluster, you must set these variables in addition to the above. The new cluster supports both **Spark 3.5.0** and **Spark 4.0.1**.
 
+**For Spark 3.5.0:**
 ```bash
 export SPARK_HOME=/opt/spark3_5_0/
 export SPARK_CONF_DIR=/opt/spark3_5_0/conf2/
 ```
 
-To make this easier the repository contains a source file in the `/scripts/` folder that can be sourced to directly set the correct environment variables.
+**For Spark 4.0.1:**
+```bash
+export SPARK_HOME=/opt/spark4_0_1/
+export SPARK_CONF_DIR=/opt/spark4_0_1/conf/
+```
+
+To make this easier the repository contains source files in the `/scripts/` folder:
+- `source_new_cluster` - Sets up environment for Spark 3.5.0
+- `source_spark4.sh` - Sets up environment for Spark 4.0.1
+
+You can source these files directly to set the correct environment variables:
+```bash
+source scripts/source_new_cluster      # For Spark 3.5.0
+# or
+source scripts/source_spark4.sh        # For Spark 4.0.1
+```
 
 ----
 
