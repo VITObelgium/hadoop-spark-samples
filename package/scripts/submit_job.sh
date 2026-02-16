@@ -22,17 +22,28 @@ PYSPARK_PYTHON="/usr/bin/python3.11"
 : "${HISTOGRAM__PROCESSOR_EXECUTOR_CORES:=1}"
 export HISTOGRAM_PROCESSOR_PARAMETERS="$*"
 
-${SPARK_HOME}/bin/spark-submit \
-  --master yarn \
-  --deploy-mode cluster \
-  --executor-memory=$HISTOGRAM__PROCESSOR_MEMORY \
-  --conf spark.executor.cores=$HISTOGRAM__PROCESSOR_EXECUTOR_CORES \
-  --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_TYPE=docker \
-  --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=$IMAGE \
-  --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=$MOUNTS \
-  --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=$PYSPARK_PYTHON \
-  --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_TYPE=docker \
-  --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=$IMAGE \
-  --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=$MOUNTS \
-  --conf spark.executorEnv.PYSPARK_PYTHON=$PYSPARK_PYTHON \
-/usr/local/lib/python3.11/site-packages/histogram_sample_package/histogram.py $HISTOGRAM_PROCESSOR_PARAMETERS
+# Build spark-submit arguments
+SPARK_SUBMIT_ARGS=(
+  --master yarn
+  --deploy-mode cluster
+  --executor-memory=$HISTOGRAM__PROCESSOR_MEMORY
+  --conf spark.executor.cores=$HISTOGRAM__PROCESSOR_EXECUTOR_CORES
+  --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_TYPE=docker
+  --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=$IMAGE
+  --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=$MOUNTS
+  --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=$PYSPARK_PYTHON
+  --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_TYPE=docker
+  --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=$IMAGE
+  --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=$MOUNTS
+  --conf spark.executorEnv.PYSPARK_PYTHON=$PYSPARK_PYTHON
+)
+
+# Add JAVA_HOME for Spark 4.0.1
+if [ "${SPARK_VERSION:-3.5.0}" = "4.0.1" ] || [ "${SPARK_VERSION:-3.5.0}" = "4" ]; then
+  SPARK_SUBMIT_ARGS+=(
+    --conf spark.yarn.appMasterEnv.JAVA_HOME=$JAVA_HOME
+    --conf spark.executorEnv.JAVA_HOME=$JAVA_HOME
+  )
+fi
+
+${SPARK_HOME}/bin/spark-submit "${SPARK_SUBMIT_ARGS[@]}" /usr/local/lib/python3.11/site-packages/histogram_sample_package/histogram.py $HISTOGRAM_PROCESSOR_PARAMETERS

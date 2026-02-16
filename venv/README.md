@@ -37,6 +37,12 @@ Before submitting, make sure to source the appropriate environment script for yo
 - `source ../scripts/source_new_cluster` - For Spark 3.5.0
 - `source ../scripts/source_spark4.sh` - For Spark 4.0.1
 
+**Note:** Spark 4.0.1 requires Java 17. The `source_spark4.sh` script automatically sets `JAVA_HOME` to Java 17. Verify Java 17 is installed:
+  ```bash
+  ls -d /usr/lib/jvm/java-17-openjdk* 2>/dev/null && echo "Java 17 found" || echo "Java 17 not found"
+  /usr/lib/jvm/java-17-openjdk/bin/java -version 2>&1 | head -1
+  ```
+
 You can provide the environment archive to Spark in two ways.
 
 ### Option A: Runtime Staging (Simple for a quick test)

@@ -68,6 +68,12 @@ Refer to the [docker sample](../docker/README.md) for more information about sub
 
 **Note:** The `submit_job.sh` script sources `../scripts/source_new_cluster` by default (for Spark 3.5.0). To use Spark 4.0.1, you can modify the script to source `../scripts/source_spark4.sh` instead, or set the environment variables manually before running the script.
 
+**Important:** Spark 4.0.1 requires Java 17. The `source_spark4.sh` script automatically configures `JAVA_HOME` to Java 17. Ensure Java 17 is available on cluster nodes. Verify with:
+  ```bash
+  ls -d /usr/lib/jvm/java-17-openjdk* 2>/dev/null && echo "Java 17 found" || echo "Java 17 not found"
+  /usr/lib/jvm/java-17-openjdk/bin/java -version 2>&1 | head -1
+  ```
+
 An important difference here is the inclusion of `/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/` in the mounts, as we need access to the data stored there.
 We also add the zipped dependencies of the spark job.
 

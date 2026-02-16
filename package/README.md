@@ -71,7 +71,13 @@ Refer to the [docker sample](../docker/README.md) for more information about sub
 
 **Note:** The `submit_job.sh` script and all Spark configuration scripts (including `source_spark4.sh`) are automatically included in the Docker image via the Dockerfile. By default, it uses Spark 3.5.0. To use Spark 4.0.1, you can set the `SPARK_VERSION` environment variable when running the container (see examples below). The script will automatically select the correct Spark configuration based on this variable.
 
-**Important:** The only mounts you need are for Spark configuration directories (which differ per Spark version), Hadoop, and authentication - the scripts themselves are already in the container.
+**Important:** 
+- The only mounts you need are for Spark configuration directories (which differ per Spark version), Hadoop, and authentication - the scripts themselves are already in the container.
+- **Spark 4.0.1 requires Java 17**. The `source_spark4.sh` script automatically configures `JAVA_HOME` and passes it to Spark executors. Ensure Java 17 is available on the cluster nodes where Spark jobs will run. You can verify Java 17 installation on a cluster node with:
+  ```bash
+  ls -d /usr/lib/jvm/java-17-openjdk* 2>/dev/null && echo "Java 17 found" || echo "Java 17 not found"
+  /usr/lib/jvm/java-17-openjdk/bin/java -version 2>&1 | head -1
+  ```
 
 An important difference here is the inclusion of `/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/` in the mounts, as we need access to the data stored there.
 

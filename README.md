@@ -30,9 +30,23 @@ export SPARK_HOME=/opt/spark4_0_1/
 export SPARK_CONF_DIR=/opt/spark4_0_1/conf/
 ```
 
+**Important:** Spark 4.0.1 requires **Java 17** (class file version 61.0). The `source_spark4.sh` script automatically sets `JAVA_HOME` to `/usr/lib/jvm/java-17-openjdk`. 
+
+To verify that Java 17 is installed and available:
+```bash
+# Check if Java 17 is installed
+ls -d /usr/lib/jvm/java-17-openjdk* 2>/dev/null || echo "Java 17 not found"
+
+# Check Java version
+java -version 2>&1 | grep -E "version|openjdk"
+
+# Or check specific Java 17 installation
+/usr/lib/jvm/java-17-openjdk/bin/java -version 2>&1 | head -1
+```
+
 To make this easier the repository contains source files in the `/scripts/` folder:
 - `source_new_cluster` - Sets up environment for Spark 3.5.0
-- `source_spark4.sh` - Sets up environment for Spark 4.0.1
+- `source_spark4.sh` - Sets up environment for Spark 4.0.1 (includes Java 17 configuration)
 
 You can source these files directly to set the correct environment variables:
 ```bash
