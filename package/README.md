@@ -25,6 +25,7 @@ This allows other users to easily integrate it into their pipelines, simply by p
 
 ### Create a docker image
 We use docker to deploy our package to the Hadoop cluster, as this greatly simplifies dependency management.
+The images include Java 17 so they work with both Spark 3.5.0 and Spark 4.0.1.
 We provide two docker files in this sample to highlight best practices concerning the creation of docker images.
 
 #### Standard Dockerfile

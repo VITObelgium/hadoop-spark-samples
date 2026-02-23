@@ -59,6 +59,7 @@ in the Hadoop cluster.
 
 The sample image defined here is already available from the public 
 `vito-docker.artifactory.vgt.vito.be/spark-docker-sample-advanced` repository with the `latest` tag.
+The image includes Java 17 and supports both Spark 3.5.0 and Spark 4.0.1.
 
 -----
 

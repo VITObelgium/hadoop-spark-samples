@@ -7,8 +7,10 @@ ENV MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-py311_24.7.1-0-
     ENV_DIR=/opt/conda/envs/job \
     PATH=/opt/conda/envs/job/bin:$PATH
 
-RUN dnf install -y wget \
+RUN dnf install -y wget java-17-openjdk-headless \
     && dnf clean all
+
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 
 # install miniconda and mamba, prevent usage of commercial channels
 RUN mkdir $TMP_DIR && \

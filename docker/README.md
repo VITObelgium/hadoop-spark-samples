@@ -11,15 +11,16 @@ In this example, we use a **pre-built Docker image** and a submission script tha
 The Docker image for this sample is already built and publicly available. You **do not** need to build it yourself.
 
   * **Image Name:** `vito-docker.artifactory.vgt.vito.be/spark-docker-sample:latest`
-  * **Contents:** The image is built from our standard `hadoop-alma9-base` and adds Python 3.11 and the `pandas` library.
+  * **Contents:** The image is built from our standard `hadoop-alma9-base` and adds Python 3.11, the `pandas` library, and Java 17 (for both Spark 3.5.0 and Spark 4.0.1).
   * **Reference `Dockerfile`** (also available in this folder)
     ```dockerfile
     FROM vito-docker.artifactory.vgt.vito.be/hadoop-alma9-base:latest
 
-    RUN dnf install -y python3.11 python3.11-pip \
-        && dnf clean all
+    RUN dnf install -y python3.11 python3.11-pip java-17-openjdk-headless \
+        && yum clean all \
+        && pip3.11 install pandas
 
-    RUN pip3.11 install pandas
+    ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
     ```
 
 -----
