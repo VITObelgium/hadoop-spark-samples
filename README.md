@@ -55,7 +55,9 @@ source scripts/source_new_cluster      # For Spark 3.5.0
 source scripts/source_spark4.sh        # For Spark 4.0.1
 ```
 
-**Tip:** In some examples the `spark-submit` call is inside a script that already selects the right environment based on `SPARK_VERSION` (e.g. `venv/submit_runtime.sh`, `docker/submit_docker.sh`). Set `SPARK_VERSION=4.0.1` (or `4`) before running such a script to use Spark 4.0.1.
+If `spark-submit` is not found when you run it manually, use `${SPARK_HOME}/bin/spark-submit` instead (the source scripts set `SPARK_HOME`).
+
+**Tip:** In some examples the `spark-submit` call is inside a script that already selects the right environment based on `SPARK_VERSION` (e.g. `venv/submit_runtime.sh`, `venv/submit_hdfs.sh`, `docker/submit_docker.sh`). Set `SPARK_VERSION=4.0.1` (or `4`) before running such a script to use Spark 4.0.1.
 
 ----
 

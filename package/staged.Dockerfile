@@ -21,7 +21,7 @@ FROM vito-docker.artifactory.vgt.vito.be/hadoop-alma9-base:latest AS runtime
 RUN dnf install -y python3.11 python3.11-pip java-17-openjdk-headless \
     && dnf clean all
 
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+ENV JAVA_HOME=/usr/lib/jvm/jre
 
 WORKDIR /app
 

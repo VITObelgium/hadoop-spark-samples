@@ -33,14 +33,6 @@ This script automates the process of submitting the Spark job with all the requi
   - `source ../scripts/source_new_cluster` - For Spark 3.5.0
   - `source ../scripts/source_spark4.sh` - For Spark 4.0.1 (automatically sets `JAVA_HOME` to Java 17, which is required for Spark 4.0.1)
 
-**Note:** Spark 4.0.1 requires Java 17 (class file version 61.0). The `source_spark4.sh` script automatically configures `JAVA_HOME=/usr/lib/jvm/java-17-openjdk` and the submit scripts pass this to Spark executors. Ensure Java 17 is installed on cluster nodes. To verify:
-  ```bash
-  # Check if Java 17 is available
-  ls -d /usr/lib/jvm/java-17-openjdk* 2>/dev/null && echo "Java 17 found" || echo "Java 17 not found"
-  
-  # Check Java version
-  /usr/lib/jvm/java-17-openjdk/bin/java -version 2>&1 | head -1
-  ```
 * **`MOUNTS`**: This variable defines critical volume mounts. It maps files and directories from the host machine (the cluster node) into the Docker container. This is necessary for services like Kerberos (`krb5.conf`) and SSSD (`sss/pipes`) to work correctly, enabling proper authentication inside the container.
 * **`PYSPARK_PYTHON`**: This tells Spark the exact path to the Python executable *inside* the container.
 * **`spark-submit --conf ...`**: The `--conf` flags pass specific settings to Spark. The following configurations are crucial for running with Docker on YARN.

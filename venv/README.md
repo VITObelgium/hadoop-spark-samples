@@ -44,7 +44,10 @@ You can provide the environment archive to Spark in two ways.
 
 This command sends the `sample_venv.tar.gz` file from your local machine along with the job. Configure **`SPARK_VERSION`** for the Spark version you want to use: `3.5.0` or `4.0.1`.
 
-**Manual command** (source the right environment first: `source ../scripts/source_new_cluster` for Spark 3.5.0, or `source ../scripts/source_spark4.sh` for Spark 4.0.1):
+**Manual command** 
+(source the right environment first: `source ../scripts/source_new_cluster` for Spark 3.5.0, or `source ../scripts/source_spark4.sh` for Spark 4.0.1).
+
+If `spark-submit` is not found, use `${SPARK_HOME}/bin/spark-submit` instead (the source scripts set `SPARK_HOME`).
 
 ```bash
 spark-submit \
@@ -82,7 +85,9 @@ Uploading the environment to HDFS once is much faster for repeated job runs.
 
     Configure **`SPARK_VERSION`** (`3.5.0` or `4.0.1`) and source the matching environment, or use the script (see below).
 
-    **Manual command:**
+    **Manual command**
+
+    If `spark-submit` is not found, use `${SPARK_HOME}/bin/spark-submit` instead.
 
     ```bash
     # Submit the job to process 500 products
@@ -95,4 +100,4 @@ Uploading the environment to HDFS once is much faster for repeated job runs.
       ../scripts/product_job.py 500
     ```
 
-    **Example script:** You can use `submit_runtime.sh` for HDFS as well: in the script, change `--archives sample_venv.tar.gz#environment` to `--archives hdfs:///user/$USER/envs/sample_venv.tar.gz#environment`. Set `SPARK_VERSION=3.5.0` or `SPARK_VERSION=4.0.1` when you run it.
+    **Example script:** Use `submit_hdfs.sh` in this directory; it uses the HDFS path and sources the correct cluster config based on `SPARK_VERSION`. Run e.g. `./submit_hdfs.sh` or `SPARK_VERSION=4.0.1 ./submit_hdfs.sh`.

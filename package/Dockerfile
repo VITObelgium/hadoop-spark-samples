@@ -6,7 +6,6 @@ ARG PACKAGE_NAME
 RUN dnf install -y python3.11 python3.11-pip python3.11-devel gcc make java-17-openjdk-headless \
     && dnf clean all
 
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 
 COPY dist/${PACKAGE_NAME} /tmp/${PACKAGE_NAME}
 RUN pip3.11 install --no-cache-dir /tmp/${PACKAGE_NAME}

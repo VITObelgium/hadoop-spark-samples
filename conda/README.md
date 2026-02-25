@@ -38,17 +38,15 @@ Before submitting, make sure to source the appropriate environment script for yo
 - `source ../scripts/source_new_cluster` - For Spark 3.5.0
 - `source ../scripts/source_spark4.sh` - For Spark 4.0.1
 
-**Note:** Spark 4.0.1 requires Java 17. The `source_spark4.sh` script automatically sets `JAVA_HOME` to Java 17. Verify Java 17 is installed:
-  ```bash
-  ls -d /usr/lib/jvm/java-17-openjdk* 2>/dev/null && echo "Java 17 found" || echo "Java 17 not found"
-  /usr/lib/jvm/java-17-openjdk/bin/java -version 2>&1 | head -1
-  ```
-
 You can provide the environment archive to Spark in two ways.
 
 ### Option A: Runtime Staging (Simple for a quick test)
 
 This command sends the `sample_conda_env.tar.gz` file from your local machine along with the job.
+
+**Manual command** (source the right environment first: `source ../scripts/source_new_cluster` for Spark 3.5.0, or `source ../scripts/source_spark4.sh` for Spark 4.0.1).
+
+If `spark-submit` is not found, use `${SPARK_HOME}/bin/spark-submit` instead.
 
 ```bash
 # Submit the job to process 500 products
@@ -61,6 +59,8 @@ spark-submit \
   product_job.py 500
 ```
 
+**Example script:** Use `submit_runtime.sh` in this directory. Run e.g. `./submit_runtime.sh` or `SPARK_VERSION=4.0.1 ./submit_runtime.sh`.
+
 ### Option B: HDFS Staging (Recommended for efficiency)
 
 Uploading the environment to HDFS once is much faster for repeated job runs.
@@ -68,11 +68,16 @@ Uploading the environment to HDFS once is much faster for repeated job runs.
 1.  **Upload the archive to HDFS:**
 
     ```bash
+    kinit
     hdfs dfs -mkdir -p /user/$USER/envs
     hdfs dfs -put -f sample_conda_env.tar.gz /user/$USER/envs/
     ```
 
 2.  **Submit the job referencing the HDFS path:**
+
+    **Manual command**
+
+    If `spark-submit` is not found, use `${SPARK_HOME}/bin/spark-submit` instead.
 
     ```bash
     # Submit the job to process 500 products
@@ -84,3 +89,5 @@ Uploading the environment to HDFS once is much faster for repeated job runs.
       --conf spark.yarn.executorEnv.PYSPARK_PYTHON=./environment/bin/python \
       product_job.py 500
     ```
+
+    **Example script:** Use `submit_hdfs.sh` in this directory. Run e.g. `./submit_hdfs.sh` or `SPARK_VERSION=4.0.1 ./submit_hdfs.sh`.

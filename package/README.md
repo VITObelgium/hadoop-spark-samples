@@ -15,6 +15,8 @@ You can copy the content and modify it to suit your own needs.
 Additional information can be found [here](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/).
 Building the package locally can be done by running `python -m build` in the folder containing `pyproject.toml`.
 
+**Version:** When you release a new version of the package, update the `version` field in `pyproject.toml` (e.g. from `2025.09.01` to `2025.10.01`). This version is used for the wheel and for the image tag in CI/CD.
+
 ### Write the processing logic
 The python spark job uses the specified dependencies to create a simple data processing workflow.
 It takes a set of raster files matching filter conditions and distributes the calculation a histogram of all pixel values.
@@ -74,11 +76,6 @@ Refer to the [docker sample](../docker/README.md) for more information about sub
 
 **Important:** 
 - The only mounts you need are for Spark configuration directories (which differ per Spark version), Hadoop, and authentication - the scripts themselves are already in the container.
-- **Spark 4.0.1 requires Java 17**. The `source_spark4.sh` script automatically configures `JAVA_HOME` and passes it to Spark executors. Ensure Java 17 is available on the cluster nodes where Spark jobs will run. You can verify Java 17 installation on a cluster node with:
-  ```bash
-  ls -d /usr/lib/jvm/java-17-openjdk* 2>/dev/null && echo "Java 17 found" || echo "Java 17 not found"
-  /usr/lib/jvm/java-17-openjdk/bin/java -version 2>&1 | head -1
-  ```
 
 An important difference here is the inclusion of `/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/` in the mounts, as we need access to the data stored there.
 
@@ -86,39 +83,36 @@ As the `submit_job.sh` script is included in the docker image, we can run spark 
 This is done using one of the following commands, depending on which Spark version you want to use:
 
 **For Spark 3.5.0:**
-``shell
+```shell
 docker run \
-    --rm \
-	-e KRB5CCNAME="FILE:/tmp/krb5cc" \
-    -e HISTOGRAM__PROCESSOR_MEMORY=8gb \
-    -e HISTOGRAM__PROCESSOR_EXECUTOR_CORES=2 \ 
-    -v $(klist | head -n 1 | cut -d ":" -f3):/tmp/krb5cc \
-    -v /opt/spark3_5_0/conf2/:/opt/spark3_5_0/conf2/ \
-    -v /usr/local/hadoop:/usr/local/hadoop \
-    -v /var/lib/sss/pipes:/var/lib/sss/pipes \
-    -v /etc/krb5.conf:/etc/krb5.conf \
-    vito-docker.artifactory.vgt.vito.be/histogram_sample_package:latest \
-    /spark-submits/submit_job.sh \
-    --start_date=2024-05-01
-``
+  --rm \
+  -e KRB5CCNAME="FILE:/tmp/krb5cc" \
+  -e HISTOGRAM__PROCESSOR_MEMORY=8gb \
+  -e HISTOGRAM__PROCESSOR_EXECUTOR_CORES=2 \
+  -v "$(klist | head -n 1 | cut -d ":" -f3)":/tmp/krb5cc \
+  -v /opt/spark3_5_0/conf2/:/opt/spark3_5_0/conf2/ \
+  -v /usr/local/hadoop:/usr/local/hadoop \
+  -v /var/lib/sss/pipes:/var/lib/sss/pipes \
+  -v /etc/krb5.conf:/etc/krb5.conf \
+  -v /data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/:/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/:ro \
+  vito-docker.artifactory.vgt.vito.be/histogram_sample_package:latest \
+  /spark-submits/submit_job.sh \
+  --start_date=2024-05-01
+```
 
-**For Spark 4.0.1:**
-``shell
-docker run \
-    --rm \
-	-e KRB5CCNAME="FILE:/tmp/krb5cc" \
-    -e SPARK_VERSION=4.0.1 \
-    -e HISTOGRAM__PROCESSOR_MEMORY=8gb \
-    -e HISTOGRAM__PROCESSOR_EXECUTOR_CORES=2 \ 
-    -v $(klist | head -n 1 | cut -d ":" -f3):/tmp/krb5cc \
-    -v /opt/spark4_0_1/conf/:/opt/spark4_0_1/conf/ \
-    -v /usr/local/hadoop:/usr/local/hadoop \
-    -v /var/lib/sss/pipes:/var/lib/sss/pipes \
-    -v /etc/krb5.conf:/etc/krb5.conf \
-    vito-docker.artifactory.vgt.vito.be/histogram_sample_package:latest \
-    /spark-submits/submit_job.sh \
-    --start_date=2024-05-01
-``
+**For Spark 4.0.1:** Run the script on the host (from a machine that has Spark 4 and Java 17 installed). This avoids `JAVA_HOME` issues in the Docker image: the script runs `spark-submit` on the host with the correct Java 17 and passes the right `JAVA_HOME` to the YARN containers. Ensure you have run `kinit` and that `/opt/spark4_0_1` and Java 17 are available on the host.
+
+```shell
+cd package/scripts
+SPARK_VERSION=4.0.1 ./submit_job.sh --start_date=2024-05-01
+```
+
+Optional: set memory and cores via environment variables before running:
+```shell
+export HISTOGRAM__PROCESSOR_MEMORY=8gb
+export HISTOGRAM__PROCESSOR_EXECUTOR_CORES=2
+SPARK_VERSION=4.0.1 ./submit_job.sh --start_date=2024-05-01
+```
 
 The output of the job can be found in the spark application logs.
 
@@ -127,4 +121,4 @@ Some things to keep in mind:
 - Make sure to use `PYSPARK_PYTHON` to refer to the python version specified in the docker image.
 - Point `IMAGE` to the correct repository and make sure it is reachable from the cluster.
 - Add any volumes you need to the `MOUNTS` variable
-- For Spark 4.0.1, mount `/opt/spark4_0_1/conf/` instead of `/opt/spark3_5_0/conf2/` in the Docker volume mounts
+- For Spark 4.0.1, run the script on the host (see above) to avoid container `JAVA_HOME` issues; or mount `/opt/spark4_0_1/conf/` instead of `/opt/spark3_5_0/conf2/` when using `docker run`.
