@@ -30,7 +30,7 @@ export SPARK_HOME=/opt/spark4_0_1/
 export SPARK_CONF_DIR=/opt/spark4_0_1/conf/
 ```
 
-**Important:** Spark 4.0.1 requires **Java 17** (class file version 61.0). The `source_spark4.sh` script automatically sets `JAVA_HOME` to `/usr/lib/jvm/java-17-openjdk`. 
+**Important:** Spark 4.0.1 requires **Java 17**. The `source_spark4.sh` script automatically sets `JAVA_HOME` to `/usr/lib/jvm/java-17-openjdk`. 
 
 To verify that Java 17 is installed and available:
 ```bash
@@ -54,6 +54,8 @@ source scripts/source_new_cluster      # For Spark 3.5.0
 # or
 source scripts/source_spark4.sh        # For Spark 4.0.1
 ```
+
+**Tip:** In some examples the `spark-submit` call is inside a script that already selects the right environment based on `SPARK_VERSION` (e.g. `venv/submit_runtime.sh`, `docker/submit_docker.sh`). Set `SPARK_VERSION=4.0.1` (or `4`) before running such a script to use Spark 4.0.1.
 
 ----
 

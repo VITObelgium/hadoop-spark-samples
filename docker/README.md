@@ -20,7 +20,8 @@ The Docker image for this sample is already built and publicly available. You **
         && yum clean all \
         && pip3.11 install pandas
 
-    ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+    ENV JAVA_HOME=/usr/lib/jvm/jre \
+        PYSPARK_PYTHON=/usr/bin/python3.11
     ```
 
 -----

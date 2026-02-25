@@ -38,12 +38,7 @@ SPARK_SUBMIT_ARGS=(
   --conf spark.executorEnv.PYSPARK_PYTHON=$PYSPARK_PYTHON
 )
 
-# Add JAVA_HOME for Spark 4.0.1
-if [ "${SPARK_VERSION:-3.5.0}" = "4.0.1" ] || [ "${SPARK_VERSION:-3.5.0}" = "4" ]; then
-  SPARK_SUBMIT_ARGS+=(
-    --conf spark.yarn.appMasterEnv.JAVA_HOME=$JAVA_HOME
-    --conf spark.executorEnv.JAVA_HOME=$JAVA_HOME
-  )
-fi
+# Do NOT pass host JAVA_HOME to Docker containers - the image already has JAVA_HOME set
+# (passing the host path causes "No such file or directory" as host and container have different Java paths)
 
 ${SPARK_HOME}/bin/spark-submit "${SPARK_SUBMIT_ARGS[@]}" /usr/local/lib/python3.11/site-packages/histogram_sample_package/histogram.py $HISTOGRAM_PROCESSOR_PARAMETERS

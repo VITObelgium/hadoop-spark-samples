@@ -16,7 +16,6 @@ MOUNTS="/var/lib/sss/pipes:/var/lib/sss/pipes:rw,/usr/local/hadoop/:/usr/local/h
 #The Python that is installed in the docker container
 PYSPARK_PYTHON="/usr/bin/python3.11"
 
-# Add JAVA_HOME config for Spark 4.0.1
 SPARK_SUBMIT_ARGS=(
   --master yarn
   --deploy-mode cluster
@@ -28,14 +27,8 @@ SPARK_SUBMIT_ARGS=(
   --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=$IMAGE
   --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=$MOUNTS
   --conf spark.executorEnv.PYSPARK_PYTHON=$PYSPARK_PYTHON
+  --conf spark.yarn.appMasterEnv.JAVA_HOME=/usr/lib/jvm/jre-17
+  --conf spark.executorEnv.JAVA_HOME=/usr/lib/jvm/jre-17
 )
-
-# Add JAVA_HOME for Spark 4.0.1
-if [ "${SPARK_VERSION:-3.5.0}" = "4.0.1" ] || [ "${SPARK_VERSION:-3.5.0}" = "4" ]; then
-  SPARK_SUBMIT_ARGS+=(
-    --conf spark.yarn.appMasterEnv.JAVA_HOME=$JAVA_HOME
-    --conf spark.executorEnv.JAVA_HOME=$JAVA_HOME
-  )
-fi
 
 ${SPARK_HOME}/bin/spark-submit "${SPARK_SUBMIT_ARGS[@]}" ../scripts/product_job.py 500
