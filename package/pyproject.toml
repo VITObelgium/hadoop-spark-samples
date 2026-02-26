@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "histogram_sample_package"
-version = "2025.09.01"
+version = "2026.02.26"
 authors = [{name = "Willem Schoors", email = "willem.schoors@vito.be"}]
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
