@@ -16,14 +16,48 @@ export PATH=/usr/local/hadoop/bin/:$PATH
 
 ### For `spark-submit` Commands
 
-To ensure your Spark jobs are submitted to the new cluster using Spark 3.5.0 (the minimum supported Spark version on the **new cluster**), you must set these variables in addition to the above:
+To ensure your Spark jobs are submitted to the new cluster, you must set these variables in addition to the above. The new cluster supports both **Spark 3.5.0** and **Spark 4.0.1**.
 
+**For Spark 3.5.0:**
 ```bash
 export SPARK_HOME=/opt/spark3_5_0/
 export SPARK_CONF_DIR=/opt/spark3_5_0/conf2/
 ```
 
-To make this easier the repository contains a source file in the `/scripts/` folder that can be sourced to directly set the correct environment variables.
+**For Spark 4.0.1:**
+```bash
+export SPARK_HOME=/opt/spark4_0_1/
+export SPARK_CONF_DIR=/opt/spark4_0_1/conf/
+```
+
+**Important:** Spark 4.0.1 requires **Java 17**. The `source_spark4.sh` script automatically sets `JAVA_HOME` to `/usr/lib/jvm/java-17-openjdk`. 
+
+To verify that Java 17 is installed and available:
+```bash
+# Check if Java 17 is installed
+ls -d /usr/lib/jvm/java-17-openjdk* 2>/dev/null || echo "Java 17 not found"
+
+# Check Java version
+java -version 2>&1 | grep -E "version|openjdk"
+
+# Or check specific Java 17 installation
+/usr/lib/jvm/java-17-openjdk/bin/java -version 2>&1 | head -1
+```
+
+To make this easier the repository contains source files in the `/scripts/` folder:
+- `source_new_cluster` - Sets up environment for Spark 3.5.0
+- `source_spark4.sh` - Sets up environment for Spark 4.0.1 (includes Java 17 configuration)
+
+You can source these files directly to set the correct environment variables:
+```bash
+source scripts/source_new_cluster      # For Spark 3.5.0
+# or
+source scripts/source_spark4.sh        # For Spark 4.0.1
+```
+
+If `spark-submit` is not found when you run it manually, use `${SPARK_HOME}/bin/spark-submit` instead (the source scripts set `SPARK_HOME`).
+
+**Tip:** In some examples the `spark-submit` call is inside a script that already selects the right environment based on `SPARK_VERSION` (e.g. `venv/submit_runtime.sh`, `venv/submit_hdfs.sh`, `docker/submit_docker.sh`). Set `SPARK_VERSION=4.0.1` (or `4`) before running such a script to use Spark 4.0.1.
 
 ----
 

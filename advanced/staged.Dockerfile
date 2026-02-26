@@ -30,12 +30,15 @@ FROM vito-docker.artifactory.vgt.vito.be/hadoop-alma9-base:latest
 ENV ENV_DIR=/opt/env \
     PATH=/opt/env/bin:$PATH \
     # GDAL_DATA gets unset when using multistage builds
-    GDAL_DATA=/opt/env/share/gdal
+    GDAL_DATA=/opt/env/share/gdal \
+    JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 
 # Copy only the packed environment from builder stage
 COPY --from=builder /tmp/env.tar /tmp/env.tar
 
 RUN set -eux \
+    # Install Java 17 for Spark 3.5 and Spark 4
+    && dnf install -y java-17-openjdk-headless && dnf clean all \
     # Create target environment directory
     && mkdir -p $ENV_DIR \
     # Extract environment into target dir

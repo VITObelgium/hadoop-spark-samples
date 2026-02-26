@@ -59,12 +59,22 @@ in the Hadoop cluster.
 
 The sample image defined here is already available from the public 
 `vito-docker.artifactory.vgt.vito.be/spark-docker-sample-advanced` repository with the `latest` tag.
+The image includes Java 17 and supports both Spark 3.5.0 and Spark 4.0.1.
 
 -----
 
 ## Step 2: Submit the Job to YARN
 We use the `submit_job.sh` script to run the spark job on the cluster.
 Refer to the [docker sample](../docker/README.md) for more information about submitting jobs in with docker images.
+
+**Note:** The `submit_job.sh` script sources `../scripts/source_new_cluster` by default (for Spark 3.5.0). To use Spark 4.0.1, set `SPARK_VERSION=4.0.1` (or `SPARK_VERSION=4`) before running the script, e.g.:
+  ```bash
+  SPARK_VERSION=4.0.1 ./submit_job.sh
+  ```
+  The script passes `JAVA_HOME=/usr/lib/jvm/jre-17` to the container so it uses Java 17 regardless of the host.
+
+**Important:** Spark 4.0.1 requires Java 17.
+
 An important difference here is the inclusion of `/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/` in the mounts, as we need access to the data stored there.
 We also add the zipped dependencies of the spark job.
 

@@ -13,7 +13,8 @@ dependencies = [
         'pystac-client==0.9',
         'rasterio==1.4',
         'numpy==2.3',
-        'pyspark==3.5.0'
+        'pyspark==3.5.0',
+        'pyspark==4.0.1'
     ]
 
 [tool.setuptools.packages.find]
