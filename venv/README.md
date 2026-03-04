@@ -33,14 +33,23 @@ This will create a `sample_venv.tar.gz` file.
 
 ## Step 2: Submit the Job to YARN
 
+Before submitting, make sure to source the appropriate environment script for your Spark version:
+- `source ../scripts/source_new_cluster` - For Spark 3.5.0
+- `source ../scripts/source_spark4.sh` - For Spark 4.0.1
+
+
 You can provide the environment archive to Spark in two ways.
 
 ### Option A: Runtime Staging (Simple for a quick test)
 
-This command sends the `sample_venv.tar.gz` file from your local machine along with the job.
+This command sends the `sample_venv.tar.gz` file from your local machine along with the job. Configure **`SPARK_VERSION`** for the Spark version you want to use: `3.5.0` or `4.0.1`.
+
+**Manual command** 
+(source the right environment first: `source ../scripts/source_new_cluster` for Spark 3.5.0, or `source ../scripts/source_spark4.sh` for Spark 4.0.1).
+
+If `spark-submit` is not found, use `${SPARK_HOME}/bin/spark-submit` instead (the source scripts set `SPARK_HOME`).
 
 ```bash
-# Submit the job to process 500 products
 spark-submit \
   --master yarn \
   --deploy-mode cluster \
@@ -48,6 +57,16 @@ spark-submit \
   --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=./environment/bin/python \
   --conf spark.yarn.executorEnv.PYSPARK_PYTHON=./environment/bin/python \
   ../scripts/product_job.py 500
+```
+
+**Example script** (`submit_runtime.sh` in this directory) — it sources the correct cluster config based on `SPARK_VERSION`:
+
+```bash
+# Spark 3.5.0 (default)
+./submit_runtime.sh
+
+# Spark 4.0.1
+SPARK_VERSION=4.0.1 ./submit_runtime.sh
 ```
 
 ### Option B: HDFS Staging (Recommended for efficiency)
@@ -64,6 +83,12 @@ Uploading the environment to HDFS once is much faster for repeated job runs.
 
 2.  **Submit the job referencing the HDFS path:**
 
+    Configure **`SPARK_VERSION`** (`3.5.0` or `4.0.1`) and source the matching environment, or use the script (see below).
+
+    **Manual command**
+
+    If `spark-submit` is not found, use `${SPARK_HOME}/bin/spark-submit` instead.
+
     ```bash
     # Submit the job to process 500 products
     spark-submit \
@@ -74,3 +99,5 @@ Uploading the environment to HDFS once is much faster for repeated job runs.
       --conf spark.yarn.executorEnv.PYSPARK_PYTHON=./environment/bin/python \
       ../scripts/product_job.py 500
     ```
+
+    **Example script:** Use `submit_hdfs.sh` in this directory; it uses the HDFS path and sources the correct cluster config based on `SPARK_VERSION`. Run e.g. `./submit_hdfs.sh` or `SPARK_VERSION=4.0.1 ./submit_hdfs.sh`.
