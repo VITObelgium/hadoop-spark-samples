@@ -1,3 +1,9 @@
+## End of life: old Hadoop cluster (29 June 2026)
+
+The **old** Hadoop cluster reaches end of life on **Monday 29 June 2026**. After that date, only the **new** cluster is available. If you still use the old cluster, migrate before the deadline. See the [Hadoop migration / EOL overview](../hadoop/hadoop_config/docs/HADOOP_MIGRATION_EOL.md) for context, differences between old and new cluster, and migration options (Docker, conda, venv).
+
+----
+
 ## ❗ Important Note: Connecting to the New Hadoop Cluster
 
 We are currently in a transition period from our old Hadoop cluster to a new, upgraded cluster. By default, the `userVM` is configured to interact with the **old** cluster.

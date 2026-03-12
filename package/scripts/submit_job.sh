@@ -29,10 +29,13 @@ SPARK_SUBMIT_ARGS=(
   --deploy-mode cluster
   --executor-memory=$HISTOGRAM__PROCESSOR_MEMORY
   --conf spark.executor.cores=$HISTOGRAM__PROCESSOR_EXECUTOR_CORES
+  --conf spark.pyspark.python=$PYSPARK_PYTHON
+  --conf spark.pyspark.driver.python=$PYSPARK_PYTHON
   --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_TYPE=docker
   --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=$IMAGE
   --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=$MOUNTS
   --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=$PYSPARK_PYTHON
+  --conf spark.yarn.appMasterEnv.PYSPARK_DRIVER_PYTHON=$PYSPARK_PYTHON
   --conf spark.yarn.appMasterEnv.JAVA_HOME=/usr/lib/jvm/jre-17
   --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_TYPE=docker
   --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=$IMAGE
