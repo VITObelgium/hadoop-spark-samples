@@ -22,10 +22,13 @@ PYSPARK_PYTHON="/opt/env/bin/python3.11"
 ${SPARK_HOME}/bin/spark-submit \
   --master yarn \
   --deploy-mode cluster \
+  --conf spark.pyspark.python=$PYSPARK_PYTHON \
+  --conf spark.pyspark.driver.python=$PYSPARK_PYTHON \
   --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_TYPE=docker \
   --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=$IMAGE \
   --conf spark.yarn.appMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=$MOUNTS \
   --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=$PYSPARK_PYTHON \
+  --conf spark.yarn.appMasterEnv.PYSPARK_DRIVER_PYTHON=$PYSPARK_PYTHON \
   --conf spark.yarn.appMasterEnv.JAVA_HOME=/usr/lib/jvm/jre-17 \
   --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_TYPE=docker \
   --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=$IMAGE \
