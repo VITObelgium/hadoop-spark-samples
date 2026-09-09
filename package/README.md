@@ -57,14 +57,14 @@ You can add your own images to a publicly accessible registry of your choice.
 Check the documentation of the [docker](../docker/README.md) sample to learn how to make your repository available 
 in the Hadoop cluster.
 
-The sample image defined here is already available from the public 
-`vito-docker.artifactory.vgt.vito.be/histogram_sample_package`repository with the `latest` tag.
+The sample image defined here is already available:
+`terrascope-docker-local-prod.repo.vito.be/histogram_sample_package` repository with the `latest` tag.
 
 #### Deploy via automated CI/CD pipeline
 This sample also contains a `Jenkinsfile` where we define an automated way to build, 
 test and deploy the logic via the internal Vito build infrastructure. We have configured it to deploy the image 
-based on the `Dockerfile` to be deployed to the vito-docker.artifactory.vgt.vito.be.
-There the image will be available as `histogram_sample_package:latest` and `histogram_sample_package:2025.09.01`.
+based on the `Dockerfile` to be deployed to the Terrascope Docker registry.
+There the image will be available under `terrascope-docker-local-prod.repo.vito.be/histogram_sample_package`, for example with the `latest` tag and versioned tags.
 
 -----
 
@@ -95,7 +95,7 @@ docker run \
   -v /var/lib/sss/pipes:/var/lib/sss/pipes \
   -v /etc/krb5.conf:/etc/krb5.conf \
   -v /data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/:/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/:ro \
-  vito-docker.artifactory.vgt.vito.be/histogram_sample_package:latest \
+  terrascope-docker-local-prod.repo.vito.be/histogram_sample_package:latest \
   /spark-submits/submit_job.sh \
   --start_date=2024-05-01
 ```

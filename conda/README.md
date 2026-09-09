@@ -54,7 +54,10 @@ spark-submit \
   --master yarn \
   --deploy-mode cluster \
   --archives sample_conda_env.tar.gz#environment \
+  --conf spark.pyspark.python=./environment/bin/python \
+  --conf spark.pyspark.driver.python=./environment/bin/python \
   --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=./environment/bin/python \
+  --conf spark.yarn.appMasterEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python \
   --conf spark.yarn.executorEnv.PYSPARK_PYTHON=./environment/bin/python \
   product_job.py 500
 ```
@@ -85,7 +88,10 @@ Uploading the environment to HDFS once is much faster for repeated job runs.
       --master yarn \
       --deploy-mode cluster \
       --archives hdfs:///user/$USER/envs/sample_conda_env.tar.gz#environment \
+      --conf spark.pyspark.python=./environment/bin/python \
+      --conf spark.pyspark.driver.python=./environment/bin/python \
       --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=./environment/bin/python \
+      --conf spark.yarn.appMasterEnv.PYSPARK_DRIVER_PYTHON=./environment/bin/python \
       --conf spark.yarn.executorEnv.PYSPARK_PYTHON=./environment/bin/python \
       product_job.py 500
     ```

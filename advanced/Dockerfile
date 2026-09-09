@@ -1,4 +1,4 @@
-FROM vito-docker.artifactory.vgt.vito.be/hadoop-alma9-base:latest
+FROM terrascope-docker-local-prod.repo.vito.be/hadoop-alma9-base:latest
 
 # Define constants
 ENV MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-py311_24.7.1-0-Linux-x86_64.sh \

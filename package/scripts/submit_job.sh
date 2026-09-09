@@ -12,7 +12,7 @@ else
 fi
 
 #The used docker image 
-IMAGE="vito-docker.artifactory.vgt.vito.be/histogram_sample_package:2026.2.26" #Override the latest tag with specific version
+IMAGE="terrascope-docker-local-prod.repo.vito.be/histogram_sample_package:2026.2.26" #Override the latest tag with specific version
 #These mounts are required for authentication purposes and for communication between the container and the cluster.
 MOUNTS="/var/lib/sss/pipes:/var/lib/sss/pipes:rw,/usr/local/hadoop/:/usr/local/hadoop/:ro,/etc/krb5.conf:/etc/krb5.conf:ro,/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/:/data/MTDA/TERRASCOPE_Sentinel2/NDVI_V2/:ro"
 #The Python that is installed in the docker container

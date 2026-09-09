@@ -1,5 +1,5 @@
 # ---------- Stage 1: Build and pack the conda environment ----------
-FROM vito-docker.artifactory.vgt.vito.be/hadoop-alma9-base:latest AS builder
+FROM terrascope-docker-local-dev.repo.vito.be/hadoop-alma9-base:latest AS builder
 
 RUN dnf install -y python3.11 python3.11-pip python3.11-devel gcc make \
     && dnf clean all
@@ -15,7 +15,7 @@ RUN pip3.11 install build
 RUN python3.11 -m build --wheel --outdir dist
 
 # ---------- Stage 2: Minimal runtime image ----------
-FROM vito-docker.artifactory.vgt.vito.be/hadoop-alma9-base:latest AS runtime
+FROM terrascope-docker-local-dev.repo.vito.be/hadoop-alma9-base:latest AS runtime
 
 # Install Python and Java 17 (for Spark 3.5 and Spark 4)
 RUN dnf install -y python3.11 python3.11-pip java-17-openjdk-headless \
