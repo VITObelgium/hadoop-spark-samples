@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=vito-docker.artifactory.vgt.vito.be/hadoop-alma9-base:latest
+ARG BASE_IMAGE=team-rise-docker-local-prod.repo.vito.be/hadoop-alma9-base:latest
 
 FROM ${BASE_IMAGE}
 ARG PACKAGE_NAME

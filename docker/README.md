@@ -10,11 +10,11 @@ In this example, we use a **pre-built Docker image** and a submission script tha
 
 The Docker image for this sample is already built and publicly available. You **do not** need to build it yourself.
 
-  * **Image Name:** `vito-docker.artifactory.vgt.vito.be/spark-docker-sample:latest`
+  * **Image Name:** `team-rise-docker-local-prod.repo.vito.be/spark-docker-sample:latest`
   * **Contents:** The image is built from our standard `hadoop-alma9-base` and adds Python 3.11, the `pandas` library, and Java 17 (for both Spark 3.5.0 and Spark 4.0.1).
   * **Reference `Dockerfile`** (also available in this folder)
     ```dockerfile
-    FROM vito-docker.artifactory.vgt.vito.be/hadoop-alma9-base:latest
+    FROM team-rise-docker-local-prod.repo.vito.be/hadoop-alma9-base:latest
 
     RUN dnf install -y python3.11 python3.11-pip java-17-openjdk-headless \
         && yum clean all \
@@ -39,6 +39,14 @@ This script automates the process of submitting the Spark job with all the requi
 
 #### Spark Docker Configurations
 These parameters instruct YARN to launch the Spark **Driver** (via `appMasterEnv`) and **Executors** (via `executorEnv`) inside specified Docker containers. Setting them for both ensures a consistent environment for your entire application.
+
+* **`spark.pyspark.python=$PYSPARK_PYTHON`** Sets the Python executable for **executors**. This is the Spark-native way to configure the Python interpreter.
+
+* **`spark.pyspark.driver.python=$PYSPARK_PYTHON`** Sets the Python executable for the **driver**. Must match `spark.pyspark.python` to avoid version mismatches.
+
+* **`spark.yarn.appMasterEnv.PYSPARK_PYTHON=$PYSPARK_PYTHON`** Passes the Python path to the **AppMaster** (driver) container as an environment variable. Required alongside the `spark.pyspark.*` configs to ensure the correct interpreter is used in cluster deploy mode.
+
+* **`spark.yarn.appMasterEnv.PYSPARK_DRIVER_PYTHON=$PYSPARK_PYTHON`** Explicitly sets the driver Python inside the AppMaster container. Ensures no fallback to a system Python.
 
 * **`YARN_CONTAINER_RUNTIME_TYPE=docker`** This is the main switch that tells YARN to use the **Docker runtime** for the container. Without this, the process would run directly on the host node's operating system.
 

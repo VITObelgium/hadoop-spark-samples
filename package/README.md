@@ -57,13 +57,13 @@ You can add your own images to a publicly accessible registry of your choice.
 Check the documentation of the [docker](../docker/README.md) sample to learn how to make your repository available 
 in the Hadoop cluster.
 
-The sample image defined here is already available from the public 
+The sample image defined here is already available: 
 `vito-docker.artifactory.vgt.vito.be/histogram_sample_package`repository with the `latest` tag.
 
 #### Deploy via automated CI/CD pipeline
 This sample also contains a `Jenkinsfile` where we define an automated way to build, 
 test and deploy the logic via the internal Vito build infrastructure. We have configured it to deploy the image 
-based on the `Dockerfile` to be deployed to the vito-docker.artifactory.vgt.vito.be.
+based on the `Dockerfile` to be deployed to the team-rise-docker-local-prod.repo.vito.be.
 There the image will be available as `histogram_sample_package:latest` and `histogram_sample_package:2025.09.01`.
 
 -----

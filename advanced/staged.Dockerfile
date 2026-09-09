@@ -1,5 +1,5 @@
 # ---------- Stage 1: Build and pack the conda environment ----------
-FROM vito-docker.artifactory.vgt.vito.be/hadoop-alma9-base:latest AS builder
+FROM team-rise-docker-local-prod.repo.vito.be/hadoop-alma9-base:latest AS builder
 
 # Define constants
 ENV MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-py311_24.7.1-0-Linux-x86_64.sh \
@@ -24,7 +24,7 @@ RUN set -eux \
     && $CONDA_DIR/bin/conda-pack -p $ENV_DIR -o /tmp/env.tar
 
 # ---------- Stage 2: Minimal runtime image ----------
-FROM vito-docker.artifactory.vgt.vito.be/hadoop-alma9-base:latest
+FROM team-rise-docker-local-prod.repo.vito.be/hadoop-alma9-base:latest
 
 # Set environment path so the environment's binaries are default
 ENV ENV_DIR=/opt/env \
